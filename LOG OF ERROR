@@ -1,0 +1,65 @@
+(mtr) gleb@gleb-Legion-Y9000P-IRX8:~/MTR/tools$ bash scripts/dist_train.sh 1 --cfg_file cfgs/waymo/mtr+100_percent_data.yaml --batch_size 1 --epochs 1 --extra_tag my_first_exp
++ NGPUS=1
++ PY_ARGS='--cfg_file cfgs/waymo/mtr+100_percent_data.yaml --batch_size 1 --epochs 1 --extra_tag my_first_exp'
++ true
++ PORT=40763
+++ nc -z 127.0.0.1 40763
+++ echo 1
++ status=1
++ '[' 1 '!=' 0 ']'
++ break
++ echo 40763
+40763
++ python -m torch.distributed.launch --nproc_per_node=1 --rdzv_endpoint=localhost:40763 train.py --launcher pytorch --cfg_file cfgs/waymo/mtr+100_percent_data.yaml --batch_size 1 --epochs 1 --extra_tag my_first_exp
+/home/gleb/miniconda3/envs/mtr/lib/python3.8/site-packages/torch/distributed/launch.py:181: FutureWarning: The module torch.distributed.launch is deprecated
+and will be removed in future. Use torchrun.
+Note that --use-env is set by default in torchrun.
+If your script expects `--local-rank` argument to be set, please
+change it to read from `os.environ['LOCAL_RANK']` instead. See 
+https://pytorch.org/docs/stable/distributed.html#launch-utility for 
+further instructions
+
+  warnings.warn(
+usage: train.py [-h] [--cfg_file CFG_FILE] [--batch_size BATCH_SIZE] [--epochs EPOCHS] [--workers WORKERS] [--extra_tag EXTRA_TAG]
+                [--ckpt CKPT] [--pretrained_model PRETRAINED_MODEL] [--launcher {none,pytorch,slurm}] [--tcp_port TCP_PORT]
+                [--without_sync_bn] [--fix_random_seed] [--ckpt_save_interval CKPT_SAVE_INTERVAL] [--local_rank LOCAL_RANK]
+                [--max_ckpt_save_num MAX_CKPT_SAVE_NUM] [--merge_all_iters_to_one_epoch] [--set ...]
+                [--max_waiting_mins MAX_WAITING_MINS] [--start_epoch START_EPOCH] [--save_to_file] [--not_eval_with_train]
+                [--logger_iter_interval LOGGER_ITER_INTERVAL] [--ckpt_save_time_interval CKPT_SAVE_TIME_INTERVAL] [--add_worker_init_fn]
+train.py: error: unrecognized arguments: --local-rank=0
+[2024-01-27 17:51:13,753] torch.distributed.elastic.multiprocessing.api: [ERROR] failed (exitcode: 2) local_rank: 0 (pid: 14325) of binary: /home/gleb/miniconda3/envs/mtr/bin/python
+Traceback (most recent call last):
+  File "/home/gleb/miniconda3/envs/mtr/lib/python3.8/runpy.py", line 194, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "/home/gleb/miniconda3/envs/mtr/lib/python3.8/runpy.py", line 87, in _run_code
+    exec(code, run_globals)
+  File "/home/gleb/miniconda3/envs/mtr/lib/python3.8/site-packages/torch/distributed/launch.py", line 196, in <module>
+    main()
+  File "/home/gleb/miniconda3/envs/mtr/lib/python3.8/site-packages/torch/distributed/launch.py", line 192, in main
+    launch(args)
+  File "/home/gleb/miniconda3/envs/mtr/lib/python3.8/site-packages/torch/distributed/launch.py", line 177, in launch
+    run(args)
+  File "/home/gleb/miniconda3/envs/mtr/lib/python3.8/site-packages/torch/distributed/run.py", line 797, in run
+    elastic_launch(
+  File "/home/gleb/miniconda3/envs/mtr/lib/python3.8/site-packages/torch/distributed/launcher/api.py", line 134, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+  File "/home/gleb/miniconda3/envs/mtr/lib/python3.8/site-packages/torch/distributed/launcher/api.py", line 264, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+============================================================
+train.py FAILED
+------------------------------------------------------------
+Failures:
+  <NO_OTHER_FAILURES>
+------------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2024-01-27_17:51:13
+  host      : gleb-Legion-Y9000P-IRX8
+  rank      : 0 (local_rank: 0)
+  exitcode  : 2 (pid: 14325)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+============================================================
+(mtr) gleb@gleb-Legion-Y9000P-IRX8:~/MTR/tools$ 
+
